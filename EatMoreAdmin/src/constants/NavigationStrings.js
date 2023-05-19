@@ -1,6 +1,7 @@
 export default {
     SPLASH_SCREEN: 'SplashScreen',
     LOGIN: 'Login',
+    EDIT_ITEM:'EditItem',
     DASHBOARD:'Dashboard',
     MANAGE_ITEM:'ManageItem',
     ORDERS:'Orders',

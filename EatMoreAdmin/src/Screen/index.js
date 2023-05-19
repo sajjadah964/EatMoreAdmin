@@ -9,6 +9,7 @@ export { default as OrderInformation } from './OrderInformation/OrderInformation
 // export { default as AllOrder } from './AllOrder/AllOrder';
 export { default as Dashboard } from './Dashboard/Dashboard';
 export { default as SplashScreen } from './SplashScreen/SplashScreen';
+export {default as EditItem} from './EditItem/EditItem'
 
 
 

@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 import React from "react";
 import NavigationStrings from "../constants/NavigationStrings";
-import { AllOrder, Checkout, Home, ItemsDetails, OrderInformation, Login, SplashScreen, Dashboard } from "../Screen";
+import { AllOrder, Checkout, Home, ItemsDetails, OrderInformation, Login, SplashScreen, Dashboard, EditItem } from "../Screen";
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import AddItem from "../tabs/AddItem/AddItem";
 import ManageItem from '../tabs/ManageItem/ManageItem';
@@ -25,10 +25,12 @@ export default function MainStack() {
                 name={NavigationStrings.DASHBOARD}
                 component={Dashboard}
             />
+
             <Stack.Screen
                 name={NavigationStrings.MANAGE_ITEM}
                 component={ManageItem}
             />
+
             <Stack.Screen
                 name={NavigationStrings.ADD_ITEM}
                 component={AddItem}
@@ -37,6 +39,11 @@ export default function MainStack() {
             <Stack.Screen
                 name={NavigationStrings.ORDERS}
                 component={Orders}
+            />
+
+              <Stack.Screen
+                name={NavigationStrings.EDIT_ITEM}
+                component={EditItem}
             />
             {/* <Stack.Screen
                 name={NavigationStrings.ITEMS_DETAILS}

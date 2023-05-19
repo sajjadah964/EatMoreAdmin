@@ -1,51 +1,69 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useRef } from 'react';
 import { StyleSheet, Text, View, SafeAreaView, Image, TouchableOpacity, ScrollView, PermissionsAndroid, ToastAndroid, Alert, FlatList } from 'react-native'
 import CustomHeader from '../../components/CustomHeader'
 import { moderateScale, moderateVerticalScale, scale } from 'react-native-size-matters'
 import Colors from '../../styles/Colors';
-import TextInputWithLabel from '../../components/TextinputWithLable';
-import fontFamily from '../../styles/fontFamily';
 import CustomPkgBtn from '../../components/CustomPkgBtn';
-import CustomModal from '../../constants/CustomModal';
 import imagePath from '../../constants/imagePath';
 import Loader from '../../components/Loader';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import storage from '@react-native-firebase/storage';
 import firestore from '@react-native-firebase/firestore';
+import NavigationStrings from '../../constants/NavigationStrings';
+import { useNavigation,useIsFocused } from '@react-navigation/native';
 const AddItem = () => {
+    const isFocused=useIsFocused();
+    const navigation = useNavigation();
     const [isLoading, setisLoading] = useState(false);
     const [items, setItems] = useState([])
-    const [selectedIndex, setSelectedIndex] = useState(0);
+    const windowHeight = Dimensions.get('window').height;
+    const bottomBarHeight = 100; // Adjust this value based on your bottom bar's height
     const buttons = [
         {
-            // id: 1,
+            id: 1,
             title: 'All Items'
         },
         {
-            // id: 2,
+            id: 2,
             title: 'Burger'
         },
         {
-            // id: 3,
+            id: 3,
             title: 'Pizza'
         }
     ]
-    const selectCategory = (index) => {
-        setSelectedIndex(index)
-        console.log(index, 'value of index');
-        // getData();
-    }
-    const getButtonStyle = (index) => {
-        if (index === selectedIndex) {
-            return styles.selectedButton;
-        } else {
-            return styles.unselectedButton;
-        }
-    };
-
     useEffect(() => {
         getData();
-    }, []);
+    }, [isFocused]);
+
+    const moveToScreen = (id,data) =>{
+        navigation.navigate(NavigationStrings.EDIT_ITEM, {
+            data:data,
+            id:id
+         });
+    }
+    const handleScroll = (event) => {
+        const offsetY = event.nativeEvent.contentOffset.y;
+        if (offsetY < 0) {
+          // Scrolled above the top, scroll to the top of the list
+          flatListRef.current.scrollToOffset({ offset: 5, animated: true });
+        }
+      };
+
+    // const selectCategory = (index) => {
+    //     setSelectedIndex(index)
+    //     console.log(index, 'value of index');
+    //     // getData();
+    // }
+
+    // const getButtonStyle = (index) => {
+    //     if (index === selectedIndex) {
+    //         return styles.selectedButton;
+    //     } else {
+    //         return styles.unselectedButton;
+    //     }
+    // };
+
     const getData = async () => {
         firestore()
             .collection('items')
@@ -63,16 +81,6 @@ const AddItem = () => {
                 setItems(tempData);
             });
     }
-    // const deleteData =(Uid)=>{
-    //     firestore()
-    //     .collection('items')
-    //     .doc(Uid)
-    //     .delete()
-    //     .then(() => {
-    //       console.log('User deleted!');
-    //       getData();
-    //     });
-    // }
     const deleteData = async (uid, imageUrl) => {
         try {
           // Delete item document from Firestore
@@ -84,7 +92,6 @@ const AddItem = () => {
             await storage().refFromURL(imageUrl).delete();
             console.log('Image deleted from Storage!');
           }
-      
           // Update item list
           getData();
         } catch (error) {
@@ -101,6 +108,8 @@ const AddItem = () => {
     //     }, 1000);
     // }),
     //     [];
+    
+  const flatListContainerHeight = windowHeight - bottomBarHeight;
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <Loader isLoading={isLoading} />
@@ -110,32 +119,35 @@ const AddItem = () => {
                     headerTitle={'Manage Items'}
                 // headerImgStyle={styles.headerImgStyle}
                 />
-                <ScrollView style={{ flex: 1 }}
-                    showsVerticalScrollIndicator={false}
-                    showsHorizontalScrollIndicator={false}
+                <View style={{ flex: 1 }}
+                    // showsVerticalScrollIndicator={false}
+                    // showsHorizontalScrollIndicator={false}
                 >
-                    <View style={styles.categoryView}>
+                    {/* <View style={styles.categoryView}>
                         <Text style={styles.categorylabel}>Categories</Text>
                         <View style={styles.categoryBtnView}>
-                            {buttons.map((button, index) => {
+                            {buttons.map((button, id) => {
                                 return (
                                     <CustomPkgBtn
-                                        key={index}
+                                    key={button.id} // Use a unique key, such as button.id
                                         btnText={button.title}
-                                        textStyle={{ ...styles.textStyle, ...styles.categoryTextStyle, color: selectedIndex == index ? '#FFF' : '#A8A7A7' }}
-                                        btnStyle={{ ...styles.btnStyle, ...getButtonStyle(index) }}
-                                        onPress={() => selectCategory(index)}
+                                        textStyle={{ ...styles.textStyle, ...styles.categoryTextStyle, color: selectedIndex == id ? '#FFF' : '#A8A7A7' }}
+                                        btnStyle={{ ...styles.btnStyle, ...getButtonStyle(id) }}
+                                        onPress={() => selectCategory(id)}
                                     />
                                 )
                             })
 
                             }
                         </View>
-                    </View>
-                    {/* {selectedIndex === 0 ? */}
-                    <FlatList
+                    </View> */}
+                   <View style={{flex:1,height:flatListContainerHeight}}>
+                   <FlatList
                         data={items}
-                        keyExtractor={(index, key) => index.toString()}
+                        onScroll={handleScroll} // Call handleScroll function on scroll
+                        showsVerticalScrollIndicator={false} // Hide the vertical scrollbar
+                        // keyExtractor={(index, key) => index.toString()}
+                        keyExtractor={(item, index) => index.toString()} // Assign unique key using index
                         renderItem={({ item, index }) => {
                             console.log(item, 'this is add items');
                             return (
@@ -147,29 +159,48 @@ const AddItem = () => {
                                             style={{ width: 80, height: 80 }}
                                         />
                                     </View>
+
                                     <View style={styles.nameView}>
                                         <Text style={[styles.itemStyle, { color: '#000' }]}>{item.data.name}</Text>
                                         <Text style={[styles.itemStyle, {}]}>Rs.{item.data.price}</Text>
                                         <Text style={[styles.itemStyle, {}]}>Points: {item.data.points}</Text>
                                     </View>
+
+                                    <View style={{
+                                        position:'relative',
+                                        backgroundColor:'red',
+                                        // flex:1,
+                                    }}>
                                     <View>
                                         <TouchableOpacity style={styles.deleteIconView}
                                         onPress={()=>deleteData(item.id,item.data.imageUrl)}
                                         >
                                             <Image
                                                 source={imagePath.icCloseIcon}
-                                                style={{ width: 25, height: 25 }}
+                                                style={{ width: 23, height: 23 }}
                                             />
                                         </TouchableOpacity>
+                                    </View>
+
+                                    <View>
+                                        <TouchableOpacity style={styles.EditIconView}
+                                        onPress={()=>moveToScreen(item.id,item.data)}
+                                        >
+                                            <Image
+                                                source={imagePath.icEditItem}
+                                                style={{ width: 23, height: 23 }}
+                                            />
+                                        </TouchableOpacity>
+                                    </View>
                                     </View>
                                 </View>
                             )
                         }}
-                    />
-                    {/* : <Text>the list is not show</Text> */}
+                        />                   
+                        </View>
 
 
-                </ScrollView>
+                </View>
             </View>
         </SafeAreaView >
     )
@@ -198,7 +229,7 @@ const styles = StyleSheet.create({
     },
     categoryBtnView: {
         flexDirection: 'row',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
     },
     // categoryBtnStyle: {
     //     height: moderateVerticalScale(37),
@@ -249,7 +280,8 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
     },
     nameView: {
-        flex: 1.5
+        flex: 1.5,
+        // backgroundColor:'red'
     },
     itemStyle: {
         fontSize: scale(16),
@@ -260,6 +292,12 @@ const styles = StyleSheet.create({
         position: 'absolute',
         right: -4,
         bottom:14,
+    },
+    EditIconView: {
+        position:'absolute',
+        top:14,
+        right:-4
+
     }
 })
 export default AddItem;

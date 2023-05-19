@@ -1,25 +1,32 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, SafeAreaView, Image, TouchableOpacity, ScrollView, PermissionsAndroid, ToastAndroid } from 'react-native'
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, View, SafeAreaView, Image, TouchableOpacity, ScrollView, PermissionsAndroid, ToastAndroid, Alert } from 'react-native'
 import CustomHeader from '../../components/CustomHeader'
 import { moderateScale, moderateVerticalScale, scale } from 'react-native-size-matters'
 import Colors from '../../styles/Colors';
 import TextInputWithLabel from '../../components/TextinputWithLable';
+import fontFamily from '../../styles/fontFamily';
 import CustomPkgBtn from '../../components/CustomPkgBtn';
+import CustomModal from '../../constants/CustomModal';
 import imagePath from '../../constants/imagePath';
 import Loader from '../../components/Loader';
-import { launchImageLibrary } from 'react-native-image-picker';
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import storage from '@react-native-firebase/storage';
 import firestore from '@react-native-firebase/firestore';
-const AddItem = () => {
-    const [isLoading, setisLoading] = useState(false);
+import { useNavigation } from '@react-navigation/native';
 
-    const [name, setName] = useState('');
-    const [price, setPrice] = useState('');
-    const [points, setPoints] = useState('');
-    const [description, setDescription] = useState('');
+const AddItem = (props) => {
+        console.log('this is the edit item data ',props.route.params.data);
+    const [isLoading, setisLoading] = useState(false);
+    const navigation = useNavigation();
+    const [name, setName] = useState(props.route.params.data.name);
+    const [price, setPrice] = useState(props.route.params.data.price);
+    const [points, setPoints] = useState(props.route.params.data.points);
+    const [description, setDescription] = useState(props.route.params.data.description);
     const [category, setCategory] = useState([]);
     const [selectedIndex, setSelectedIndex] = useState(0);
-    const [imageData, setImageData] = useState(null);
+    const [imageData, setImageData] = useState({
+        assets:[{uri:props.route.params.data.imageUrl}]
+    });
     const buttons = [
         {
             id: 1,
@@ -76,14 +83,14 @@ const AddItem = () => {
             setImageData(result);
         }
     };
-
-    const uploadItem = async (url) => {
+    const editItem = async () => {
         if (!name || !price || !points || !description || !imageData) {
             ToastAndroid.show('Please enter all data', ToastAndroid.SHORT);
             return;
         }
         setisLoading(true);
         let imageUploaded = false;
+        let url = props.route.params.data.imageUrl; // Default to the existing URL
         if (imageData.assets[0] !== '') {
             try {
                 const reference = storage().ref(imageData.assets[0].fileName);
@@ -102,22 +109,24 @@ const AddItem = () => {
         }
         firestore()
             .collection('items')
-            .add({
+            .doc(props.route.params.id)
+            .update({
                 name: name,
                 price: price,
                 points: points,
                 description: description,
                 category:
-                    selectedIndex == 0 ? 'All Items' : selectedIndex == 1 ? 'Burger' : 'Pizza',
+                selectedIndex == 0 ? 'All Items' : selectedIndex  == 1 ? 'Burger' : 'Pizza',
                 imageUrl: imageUploaded ? url + '' : null,
             })
             .then(() => {
                 setisLoading(false)
-                ToastAndroid.show('Item Added', ToastAndroid.SHORT);
+                ToastAndroid.show('Item Updated', ToastAndroid.SHORT);
+                navigation.goBack()
             })
             .catch((error) => {
                 setisLoading(false)
-                ToastAndroid.show('Item added failed', ToastAndroid.SHORT);
+                ToastAndroid.show('Item Updated failed', ToastAndroid.SHORT);
                 console.log(error);
             });
 
@@ -142,7 +151,7 @@ const AddItem = () => {
             <View style={styles.container}>
                 <CustomHeader
                     // leftImg={imagePath.icBack}
-                    headerTitle={'Add Items'}
+                    headerTitle={'Edit Items'}
                 // headerImgStyle={styles.headerImgStyle}
                 />
                 <ScrollView style={{ flex: 1 }}
@@ -199,7 +208,8 @@ const AddItem = () => {
                                 {buttons.map((button, index) => {
                                     return (
                                         <CustomPkgBtn
-                                            key={index}
+                                            key={button.id.toString() + index.toString()} // Use a unique key
+                                            // keyExtractor={(index, key) => index.toString()}
                                             btnText={button.title}
                                             textStyle={{ ...styles.textStyle, ...styles.categoryTextStyle, color: selectedIndex == index ? '#FFF' : '#A8A7A7' }}
                                             btnStyle={{ ...styles.btnStyle, ...getButtonStyle(index) }}
@@ -254,10 +264,10 @@ const AddItem = () => {
                             </View>
                         </View>
                         <CustomPkgBtn
-                            btnText={'Upload Item'}
+                            btnText={'Edit Item'}
                             textStyle={{ ...styles.textStyle }}
                             btnStyle={{ ...styles.btnStyle }}
-                            onPress={() => uploadItem()}
+                            onPress={() => editItem()}
                         />
                     </View>
                 </ScrollView>
