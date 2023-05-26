@@ -180,7 +180,7 @@ const AddItem = (props) => {
                             placeholderTextColor='rgba(0, 0, 0, 0.3)'
                             value={price}
                             onChangeText={txt => setPrice(txt)}
-
+                            keyboardType="numeric"
                         />
                         <TextInputWithLabel
                             // label={'City'}
@@ -191,6 +191,7 @@ const AddItem = (props) => {
                             placeholderTextColor='rgba(0, 0, 0, 0.3)'
                             value={points}
                             onChangeText={txt => setPoints(txt)}
+                            keyboardType="numeric"
                         />
                         <TextInputWithLabel
                             // label={'Address'}

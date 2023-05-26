@@ -16,6 +16,7 @@ const AddItem = () => {
     const [name, setName] = useState('');
     const [price, setPrice] = useState('');
     const [points, setPoints] = useState('');
+    const [quantity,setQuantity]=useState(1);
     const [description, setDescription] = useState('');
     const [category, setCategory] = useState([]);
     const [selectedIndex, setSelectedIndex] = useState(0);
@@ -110,6 +111,7 @@ const AddItem = () => {
                 category:
                     selectedIndex == 0 ? 'All Items' : selectedIndex == 1 ? 'Burger' : 'Pizza',
                 imageUrl: imageUploaded ? url + '' : null,
+                quantity:quantity,
             })
             .then(() => {
                 setisLoading(false)
@@ -128,14 +130,6 @@ const AddItem = () => {
         setSelectedIndex(0);
         // setImageData('');
     };
-
-    // LOADING CODE
-    // useEffect(() => {
-    //     setTimeout(() => {
-    //         setisLoading(false);
-    //     }, 1000);
-    // }),
-    //     [];
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <Loader isLoading={isLoading} />
@@ -223,13 +217,6 @@ const AddItem = () => {
                                         requestCameraPermission();
                                     }}
                                 >
-                                    {/* <Image
-                                            style={{
-                                                justifyContent: 'center',
-                                                alignItems: 'center',
-                                            }}
-                                            source={imagePath.icAddImage}
-                                        /> */}
                                     {imageData !== null ? (
                                         <Image
                                             source={{ uri: imageData.assets[0].uri }}

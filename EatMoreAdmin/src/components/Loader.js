@@ -8,7 +8,7 @@ const Loader = ({ isLoading }) => {
     return (
       <Modal transparent>
         <View style={styles.loaderStyle}>
-          <Text style={{ color: Colors.primaryColor, fontSize: 22,marginBottom:moderateVerticalScale(5) }}> Please Wait...</Text>
+          <Text style={{ color: Colors.primaryColor, fontSize: 22,marginBottom:moderateVerticalScale(5) }}> Loading...</Text>
           <ActivityIndicator color={Colors.primaryColor} size={35} />
         </View>
       </Modal>

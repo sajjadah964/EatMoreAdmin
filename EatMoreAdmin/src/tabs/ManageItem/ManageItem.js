@@ -1,5 +1,5 @@
 import React, { useState, useEffect,useRef } from 'react';
-import { StyleSheet, Text, View, SafeAreaView, Image, TouchableOpacity, ScrollView, PermissionsAndroid, ToastAndroid, Alert, FlatList } from 'react-native'
+import { StyleSheet, Text, View, SafeAreaView, Image, TouchableOpacity, ScrollView, PermissionsAndroid, Dimensions, ToastAndroid, Alert, FlatList } from 'react-native'
 import CustomHeader from '../../components/CustomHeader'
 import { moderateScale, moderateVerticalScale, scale } from 'react-native-size-matters'
 import Colors from '../../styles/Colors';
