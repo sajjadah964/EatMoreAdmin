@@ -12,6 +12,7 @@ import firestore from '@react-native-firebase/firestore';
 import NavigationStrings from '../../constants/NavigationStrings';
 import { useNavigation,useIsFocused } from '@react-navigation/native';
 const AddItem = () => {
+    const flatListRef = useRef(null);
     const isFocused=useIsFocused();
     const navigation = useNavigation();
     const [isLoading, setisLoading] = useState(false);
@@ -102,12 +103,12 @@ const AddItem = () => {
       
       
     // LOADING CODE
-    // useEffect(() => {
-    //     setTimeout(() => {
-    //         setisLoading(false);
-    //     }, 1000);
-    // }),
-    //     [];
+    useEffect(() => {
+        setTimeout(() => {
+            setisLoading(false);
+        }, 1000);
+    }),
+        [];
     
   const flatListContainerHeight = windowHeight - bottomBarHeight;
     return (
@@ -144,9 +145,13 @@ const AddItem = () => {
                    <View style={{flex:1,height:flatListContainerHeight}}>
                    <FlatList
                         data={items}
+                        ref={flatListRef}
                         onScroll={handleScroll} // Call handleScroll function on scroll
                         showsVerticalScrollIndicator={false} // Hide the vertical scrollbar
                         // keyExtractor={(index, key) => index.toString()}
+                        onLayout={() => {
+                            flatListRef.current.scrollToOffset({ offset: 0, animated: false });
+                          }}
                         keyExtractor={(item, index) => index.toString()} // Assign unique key using index
                         renderItem={({ item, index }) => {
                             console.log(item, 'this is add items');

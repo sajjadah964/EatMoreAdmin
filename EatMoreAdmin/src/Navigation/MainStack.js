@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 import React from "react";
 import NavigationStrings from "../constants/NavigationStrings";
-import { AllOrder, Checkout, Home, ItemsDetails, OrderInformation, Login, SplashScreen, Dashboard, EditItem } from "../Screen";
+import {Login, SplashScreen, Dashboard, EditItem } from "../Screen";
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import AddItem from "../tabs/AddItem/AddItem";
 import ManageItem from '../tabs/ManageItem/ManageItem';
@@ -12,14 +12,14 @@ export default function MainStack() {
     console.log("this is my mainstack file")
     return (
         <Stack.Navigator screenOptions={{ presentation: 'card', headerShown: false }}>
-            {/* <Stack.Screen
+            <Stack.Screen
                 name={NavigationStrings.SPLASH_SCREEN}
                 component={SplashScreen}
-            /> */}
-            {/* <Stack.Screen
+            />
+            <Stack.Screen
                 name={NavigationStrings.LOGIN}
                 component={Login}
-            /> */}
+            />
 
             <Stack.Screen
                 name={NavigationStrings.DASHBOARD}
@@ -45,22 +45,6 @@ export default function MainStack() {
                 name={NavigationStrings.EDIT_ITEM}
                 component={EditItem}
             />
-            {/* <Stack.Screen
-                name={NavigationStrings.ITEMS_DETAILS}
-                component={ItemsDetails}
-            />
-            <Stack.Screen
-                name={NavigationStrings.CHECKOUT}
-                component={Checkout}
-            />
-            <Stack.Screen
-                name={NavigationStrings.ORDER_INFORMATION}
-                component={OrderInformation}
-            />
-            <Stack.Screen
-                name={NavigationStrings.ALL_ORDER}
-                component={AllOrder}
-            /> */}
         </Stack.Navigator>
     )
 

@@ -31,13 +31,6 @@ const ItemsDetails = (props) => {
         }, 1000);
     }),
         [];
-    const counter = (type) => {
-        if (type == "increment") {
-            setCount(count + 1)
-        } else if (type == "decrement" && count > 0) {
-            setCount(count - 1)
-        }
-    }
     return (
         <SafeAreaView style={{ flex: 1 }}>
             {isLoading ? <Loader isLoading={isLoading} /> :

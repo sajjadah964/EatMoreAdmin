@@ -10,37 +10,15 @@ import { firebase } from '@react-native-firebase/firestore';
 const Stack = createNativeStackNavigator();
 
 function Routes() {
-    // const [user, setUser] = useState('');
-    // // const navigation = useNavigation();
-    // useEffect(() => {
-    //     const unsubscribe =  auth().onAuthStateChanged((userExist) => {
-    //         if (user) {
-    //             setUser(userExist)
-    //         } else {
-    //             setUser('')
-    //         }
-    //     })
-    //     return unsubscribe; // Unsubscribe from the listener when the component unmounts
-    // }, []);
 
     return (
         <NavigationContainer>
             <Stack.Navigator
                 screenOptions={{ presentation: 'card', headerShown: false }}
-                initialRouteName={NavigationStrings.LOGIN}
+                initialRouteName={NavigationStrings.SPLASH_SCREEN}
             >
-                {/* {user ? MainStack(Stack) : AuthStack(Stack)}
-                {MainStack(Stack)} */}
               <Stack.Screen name={NavigationStrings.MAIN_STACK} component={MainStack} />
             </Stack.Navigator>
-              {/* <Stack.Screen name={NavigationStrings.MAIN_STACK} component={MainStack} /> */}
-            {/* <Stack.Navigator screenOptions={{ presentation: 'card', headerShown: false }}>
-                {user ? (
-                    <Stack.Screen name={NavigationStrings.MAIN_STACK} component={MainStack} />
-                ) : (
-                    <Stack.Screen name={NavigationStrings.AUTH_STACK} component={AuthStack} />
-                )}
-            </Stack.Navigator> */}
         </NavigationContainer>
     )
 }
