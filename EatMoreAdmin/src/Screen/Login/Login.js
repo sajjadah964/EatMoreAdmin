@@ -23,10 +23,6 @@ const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isVisible, setVisible] = useState(true)
-    // const moveToScreen = (screen) => {
-    //     navigation.navigate(screen);
-    // }
-
     // ADDING ADMIN LOGIN FIREBASE 
     // useEffect(() => {
     //     firestore()
@@ -49,7 +45,6 @@ const Login = () => {
             ToastAndroid.show('Login successfully  ', ToastAndroid.SHORT);
             setisLoading(false);
             navigation.navigate(NavigationStrings.DASHBOARD);
-            await AsyncStorage.setItem('EMAIL', email);
             
         } else {
             setisLoading(false)
@@ -119,7 +114,6 @@ const Login = () => {
                                 btnStyle={{ ...styles.btnStyle, ...styles.customStyle }}
                                 btnText={'Login'}
                                 onPress={() => {
-                                    navigation.navigate(NavigationStrings.DASHBOARD)
                                 if (email !== '' && password !== '') {
                                     adminLogin()
                                 } else {
