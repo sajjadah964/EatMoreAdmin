@@ -110,7 +110,7 @@ const AddItem = () => {
                 points: points,
                 description: description,
                 category:
-                    selectedIndex == 0 ? 'Fast' : selectedIndex == 1 ? 'Desi' : 'Deserts',
+                    selectedIndex == 0 ? 'Fast' : selectedIndex == 1 ? 'Desi' : 'Desert',
                 imageUrl: imageUploaded ? url + '' : null,
                 quantity:quantity,
             })
