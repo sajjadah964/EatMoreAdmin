@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { View, Text, StyleSheet, Image, FlatList, RefreshControl } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import firestore from '@react-native-firebase/firestore';
