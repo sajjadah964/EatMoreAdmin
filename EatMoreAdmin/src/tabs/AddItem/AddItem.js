@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, SafeAreaView, Image, TouchableOpacity, ScrollView, PermissionsAndroid, ToastAndroid } from 'react-native'
 import CustomHeader from '../../components/CustomHeader'
@@ -24,15 +25,15 @@ const AddItem = () => {
     const buttons = [
         {
             id: 1,
-            title: 'All Items'
+            title: 'Fast Food'
         },
         {
             id: 2,
-            title: 'Burger'
+            title: 'Desi Food'
         },
         {
             id: 3,
-            title: 'Pizza'
+            title: 'Deserts'
         }
     ]
     const selectCategory = (index) => {
@@ -109,7 +110,7 @@ const AddItem = () => {
                 points: points,
                 description: description,
                 category:
-                    selectedIndex == 0 ? 'All Items' : selectedIndex == 1 ? 'Burger' : 'Pizza',
+                    selectedIndex == 0 ? 'Fast' : selectedIndex == 1 ? 'Desi' : 'Desert',
                 imageUrl: imageUploaded ? url + '' : null,
                 quantity:quantity,
             })
