@@ -30,15 +30,15 @@ const AddItem = (props) => {
     const buttons = [
         {
             id: 1,
-            title: 'All Items'
+            title: 'Fast Food'
         },
         {
             id: 2,
-            title: 'Burger'
+            title: 'Desi Food'
         },
         {
             id: 3,
-            title: 'Pizza'
+            title: 'Deserts'
         }
     ]
     const selectCategory = (index) => {
@@ -116,7 +116,7 @@ const AddItem = (props) => {
                 points: points,
                 description: description,
                 category:
-                selectedIndex == 0 ? 'All Items' : selectedIndex  == 1 ? 'Burger' : 'Pizza',
+                selectedIndex == 0 ? 'Fast' : selectedIndex == 1 ? 'Desi' : 'Desert',
                 imageUrl: imageUploaded ? url + '' : null,
             })
             .then(() => {
