@@ -34,7 +34,15 @@ const AddItem = () => {
         {
             id: 3,
             title: 'Deserts'
-        }
+        },
+        {
+            id: 4,
+            title: 'Desi Extra'
+        },
+        {
+            id: 5,
+            title: 'Fast Extra'
+        },
     ]
     const selectCategory = (index) => {
         setSelectedIndex(index)
@@ -110,7 +118,7 @@ const AddItem = () => {
                 points: points,
                 description: description,
                 category:
-                    selectedIndex == 0 ? 'Fast' : selectedIndex == 1 ? 'Desi' : 'Desert',
+                    selectedIndex == 0 ? 'Fast' : selectedIndex == 1 ? 'Desi' : selectedIndex == 2 ? 'Desert': selectedIndex == 2 ? 'desiExtra' : 'fastExtra',
                 imageUrl: imageUploaded ? url + '' : null,
                 quantity:quantity,
             })
@@ -191,6 +199,7 @@ const AddItem = () => {
                         <View style={styles.categoryView}>
                             <Text style={styles.categorylabel}>Select Your Category</Text>
                             <View style={styles.categoryBtnView}>
+                                <ScrollView horizontal={true}>
                                 {buttons.map((button, index) => {
                                     return (
                                         <CustomPkgBtn
@@ -204,6 +213,7 @@ const AddItem = () => {
                                 })
 
                                 }
+                                </ScrollView>
                             </View>
                         </View>
                         <View style={styles.addImageView}>
@@ -287,6 +297,7 @@ const styles = StyleSheet.create({
         width: '92%',
         height: moderateScale(48),
         backgroundColor: '#50379E',
+        marginRight: 20,
         marginTop: moderateVerticalScale(22),
         marginBottom: moderateVerticalScale(90)
     },
